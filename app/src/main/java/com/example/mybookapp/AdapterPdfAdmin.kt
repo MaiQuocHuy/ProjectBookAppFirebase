@@ -24,6 +24,7 @@ class AdapterPdfAdmin:Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Filterable {
     //filter object
     private var filter:FilterPdfAdmin? = null
 
+
     constructor(context: Context, pdfArrayList: ArrayList<ModelPdf>) : super() {
         this.context = context
         this.pdfArrayList = pdfArrayList
@@ -78,6 +79,14 @@ class AdapterPdfAdmin:Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Filterable {
         holder.moreBtn.setOnClickListener {
             moreOptionsDiaLog(model, holder)
         }
+
+        //handle item open pdf detail activity
+        holder.itemView.setOnClickListener {
+            //intent with book id
+            val intent = Intent(context, PdfDetailActivity::class.java)
+            intent.putExtra("bookId", pdfId)// will be used to load book details
+            context.startActivity(intent)
+        }
     }
 
     private fun moreOptionsDiaLog(model: ModelPdf, holder: HolderPdfAdmin) {
@@ -97,8 +106,6 @@ class AdapterPdfAdmin:Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Filterable {
                    val intent = Intent(context, PdfEditActivity::class.java)
                     intent.putExtra("bookId", bookId)
                     context.startActivity(intent)
-
-
                 } else if(position == 1) {
                     //delete is clicked
                     MyApplication.deleteBook(context, bookId, bookUrl, bookTitle)

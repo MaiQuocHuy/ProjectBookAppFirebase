@@ -4,12 +4,10 @@ import android.app.Application
 import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Bitmap
-import android.service.quicksettings.Tile
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.github.barteksc.pdfviewer.PDFView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -24,7 +22,9 @@ import android.graphics.pdf.*
 import android.os.ParcelFileDescriptor
 import android.widget.ImageView
 import android.widget.Toast
+import com.github.barteksc.pdfviewer.PDFView
 import java.io.FileOutputStream
+import kotlin.collections.HashMap
 
 class MyApplication : Application() {
 
@@ -197,6 +197,9 @@ class MyApplication : Application() {
                     val bitmap = Bitmap.createBitmap(currentPage.width, currentPage.height, Bitmap.Config.ARGB_8888)
                     currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
                     progressBar.visibility = View.INVISIBLE
+                    if (pagesTv != null) {
+                        pagesTv.text = "${pdfRenderer.pageCount}"
+                    }
                     pdfView.setImageBitmap(bitmap)
                     currentPage.close()
                     pdfRenderer.close()
@@ -264,6 +267,36 @@ class MyApplication : Application() {
                     Toast.makeText(context, "failed to delete", Toast.LENGTH_SHORT).show()
                 }
 
+        }
+
+        fun increamentBookViewCount(bookId: String) {
+            //get current book views count
+            val ref = FirebaseDatabase.getInstance().getReference("Books")
+            ref.child(bookId)
+                .addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        //get views count
+                        var viewsCount = "${snapshot.child("viewsCount").value}"
+                        if(viewsCount == "" || viewsCount == "null") {
+                            viewsCount = "0"
+                        }
+                        // increment views count
+                        val newViewsCount = viewsCount.toLong() + 1
+                        //set up data to update in db
+                        val hashMap = HashMap<String, Any>()
+
+                        hashMap["viewsCount"] = newViewsCount
+                        //set to db
+                        val dbRef = FirebaseDatabase.getInstance().getReference("Books")
+                        dbRef.child(bookId)
+                            .updateChildren(hashMap)
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+
+                })
         }
     }
 
