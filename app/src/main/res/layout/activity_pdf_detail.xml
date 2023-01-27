@@ -33,6 +33,7 @@
     </RelativeLayout>
 
     <ScrollView
+        android:layout_above="@id/bookOptionsLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbarRl"
@@ -59,10 +60,6 @@
                         android:layout_height="match_parent"
                         android:scaleType="fitCenter"
                         android:adjustViewBounds="true" />
-<!--                    <com.github.barteksc.pdfviewer.PDFView-->
-<!--                        android:id="@+id/pdfView"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent" />-->
 
                     <ProgressBar
                         android:id="@+id/progressBar"
@@ -227,5 +224,24 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bookOptionsLl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/design_default_color_primary">
+
+       <Button
+           android:id="@+id/readBookBtn"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Read"
+           android:drawableTop="@drawable/ic_baseline_menu_book_24"
+           android:layout_weight="1"/>
+
+
+    </LinearLayout>
 
 </RelativeLayout>
