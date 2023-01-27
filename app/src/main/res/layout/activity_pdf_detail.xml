@@ -241,7 +241,14 @@
            android:drawableTop="@drawable/ic_baseline_menu_book_24"
            android:layout_weight="1"/>
 
-
+        <Button
+            android:id="@+id/downloadBookBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Download"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_baseline_save_alt_24"
+            />
     </LinearLayout>
 
 </RelativeLayout>
