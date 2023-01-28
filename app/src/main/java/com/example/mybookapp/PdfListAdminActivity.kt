@@ -42,12 +42,14 @@ class PdfListAdminActivity : AppCompatActivity() {
         //load pdf/books
         loadPdfList()
         //search
-        binding.searchEt.addTextChangedListener(object : TextWatcher{
+        binding.searchEt.addTextChangedListener(
+            object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 try {
+                    Log.d(TAG, "${s}")
                     adapterPdfAdmin.filter.filter(s)
                 } catch (e: Exception) {
                    Log.d(TAG, "${e.message}")

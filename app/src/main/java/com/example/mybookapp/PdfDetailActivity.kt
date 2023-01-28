@@ -85,21 +85,6 @@ class PdfDetailActivity : AppCompatActivity() {
 
     }
 
-    //    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when (requestCode) {
-//            REQUEST_CODE_STORAGE -> {
-//                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    // Permission granted
-//                    // You can now perform the action that requires the permission
-//                    downloadBook()
-//                } else {
-//                    // Permission denied
-//                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//        }
-//    }
     val requestStoragePermissionLaucher =
         registerForActivityResult(ActivityResultContracts.RequestPermission())
         { isGranted ->
@@ -134,7 +119,6 @@ class PdfDetailActivity : AppCompatActivity() {
     private fun saveToDownloadsFolder(bytes: ByteArray?) {
         Log.d(TAG, "savetodownloadsfolder:saving")
         val nameWithExtension = "${System.currentTimeMillis()}.pdf"
-
 
         try {
             val downloadsFolder =
@@ -186,7 +170,8 @@ class PdfDetailActivity : AppCompatActivity() {
                         .addOnSuccessListener {
                             Log.d(TAG, "onDataChange: Downloads count incremented")
                         }
-                        .addOnFailureListener {
+                        .addOnFailureListener {e ->
+                            Log.d(TAG, "onDataChange: Faild Downloads ${e.message}")
                         }
                 }
 
