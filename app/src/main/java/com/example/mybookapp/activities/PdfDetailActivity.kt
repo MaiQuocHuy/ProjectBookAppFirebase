@@ -108,7 +108,7 @@ class PdfDetailActivity : AppCompatActivity() {
                 //user is logged in, we can do favarite functionality
                 if (isInMyFavorite) {
                     //already in fav, remove
-                    removeFromFavorite()
+                    MyApplication.removeFromFavorite(this, bookId)
                 } else {
                     addToFavorite()
                 }
@@ -171,21 +171,7 @@ class PdfDetailActivity : AppCompatActivity() {
 
     }
 
-    private fun removeFromFavorite() {
-        Log.d(TAG, "removefromfavorite: Removinging from fav")
-        //database ref
-        val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.child(firebaseAuth.uid!!).child("Favorites").child(bookId)
-            .removeValue()
-            .addOnSuccessListener {
-                Log.d(TAG, "removefromfavorite: Removinging from fav")
-                Toast.makeText(this, " Removing from fav", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e ->
-                Log.d(TAG, "removefromfavorite: Failded Removinging from fav ${e.message}")
-                Toast.makeText(this, "Faild to remove from fav due to ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
+
 
 
     val requestStoragePermissionLaucher =

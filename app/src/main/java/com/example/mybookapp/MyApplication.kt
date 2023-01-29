@@ -22,7 +22,9 @@ import android.graphics.pdf.*
 import android.os.ParcelFileDescriptor
 import android.widget.ImageView
 import android.widget.Toast
+import com.example.mybookapp.activities.PdfDetailActivity
 import com.github.barteksc.pdfviewer.PDFView
+import com.google.firebase.auth.FirebaseAuth
 import java.io.FileOutputStream
 import kotlin.collections.HashMap
 
@@ -297,6 +299,24 @@ class MyApplication : Application() {
                     }
 
                 })
+        }
+
+         fun removeFromFavorite(context: Context, bookId: String) {
+            val TAG = "REMOVE_FAV_TAG"
+            val firebaseAuth = FirebaseAuth.getInstance()
+            Log.d(TAG, "removefromfavorite: Removinging from fav")
+            //database ref
+            val ref = FirebaseDatabase.getInstance().getReference("Users")
+            ref.child(firebaseAuth.uid!!).child("Favorites").child(bookId)
+                .removeValue()
+                .addOnSuccessListener {
+                    Log.d(TAG, "removefromfavorite: Removinging from fav")
+                    Toast.makeText(context, " Removing from fav", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Log.d(TAG, "removefromfavorite: Failded Removinging from fav ${e.message}")
+                    Toast.makeText(context, "Faild to remove from fav due to ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 

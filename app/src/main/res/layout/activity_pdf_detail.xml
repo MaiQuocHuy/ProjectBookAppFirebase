@@ -221,6 +221,37 @@
                 android:text="The description of the book"
                 android:textColor="@color/black"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray03"
+                android:layout_marginTop="5dp"/>
+            
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+<!--                TextView: Comments Label-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
+             <ImageButton
+                 android:id="@+id/addComment"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:src="@drawable/ic_baseline_add_comment_24"
+                 android:padding="10dp"
+                 android:layout_alignParentEnd="true"
+                 />
+
+            </RelativeLayout>
+
+
+                
+
         </LinearLayout>
 
     </ScrollView>
