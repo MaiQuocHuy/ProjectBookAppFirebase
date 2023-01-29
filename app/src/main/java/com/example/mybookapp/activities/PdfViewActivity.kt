@@ -1,4 +1,4 @@
-package com.example.mybookapp
+package com.example.mybookapp.activities
 
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfRenderer
@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.example.mybookapp.Constants
 import com.example.mybookapp.databinding.ActivityPdfViewBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

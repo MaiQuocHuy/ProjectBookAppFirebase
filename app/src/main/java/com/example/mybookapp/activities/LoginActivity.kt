@@ -1,4 +1,4 @@
-package com.example.mybookapp
+package com.example.mybookapp.activities
 
 import android.app.ProgressDialog
 import android.content.Intent

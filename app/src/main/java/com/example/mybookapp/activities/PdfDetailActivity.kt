@@ -1,7 +1,6 @@
-package com.example.mybookapp
+package com.example.mybookapp.activities
 
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +18,9 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import java.io.FileOutputStream
 import android.Manifest
+import com.example.mybookapp.Constants
+import com.example.mybookapp.MyApplication
+import com.example.mybookapp.R
 import com.google.firebase.auth.FirebaseAuth
 
 class PdfDetailActivity : AppCompatActivity() {
@@ -127,12 +129,14 @@ class PdfDetailActivity : AppCompatActivity() {
                         //available in favorite
                         Log.d(TAG, "onDatachange")
                         //set drable top icon
-                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_baseline_favorite_24, 0, 0)
+                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
+                            R.drawable.ic_baseline_favorite_24, 0, 0)
                         binding.favoriteBtn.text = "Remove Favorite"
                     } else {
                         //not available in favorite
                         //set drable top icon
-                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_baseline_favorite_border_24, 0, 0)
+                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
+                            R.drawable.ic_baseline_favorite_border_24, 0, 0)
                         binding.favoriteBtn.text = "Add Favorite"
                     }
                 }

@@ -1,4 +1,4 @@
-package com.example.mybookapp
+package com.example.mybookapp.activities
 
 import android.app.AlertDialog
 import android.app.ProgressDialog
@@ -11,7 +11,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlin.math.log
 
 class PdfEditActivity : AppCompatActivity() {
     //view binding

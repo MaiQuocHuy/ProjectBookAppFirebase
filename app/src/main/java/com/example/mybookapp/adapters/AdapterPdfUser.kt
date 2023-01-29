@@ -1,4 +1,4 @@
-package com.example.mybookapp
+package com.example.mybookapp.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,11 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.mybookapp.filters.FilterPdfUser
+import com.example.mybookapp.MyApplication
+import com.example.mybookapp.activities.PdfDetailActivity
 import com.example.mybookapp.databinding.RowPdfUserBinding
+import com.example.mybookapp.models.ModelPdf
 
 class AdapterPdfUser:Adapter<AdapterPdfUser.HolderPdfUser>, Filterable {
 
@@ -67,7 +71,13 @@ class AdapterPdfUser:Adapter<AdapterPdfUser.HolderPdfUser>, Filterable {
         holder.descriptionTv.text = description
         holder.dateTv.text = date
 
-        MyApplication.loadPdfFromUrlSinglePage(url, title, holder.pdfView, holder.progressionBar, null)//no need number of pages so pass null
+        MyApplication.loadPdfFromUrlSinglePage(
+            url,
+            title,
+            holder.pdfView,
+            holder.progressionBar,
+            null
+        )//no need number of pages so pass null
 
         MyApplication.loadCategory(categoryId, holder.categoryTv)
 

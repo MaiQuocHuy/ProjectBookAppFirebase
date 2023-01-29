@@ -1,14 +1,13 @@
-package com.example.mybookapp
+package com.example.mybookapp.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Display.Mode
-import android.view.LayoutInflater
-import com.example.mybookapp.databinding.ActivityPdfAddBinding
+import com.example.mybookapp.adapters.AdapterPdfAdmin
 import com.example.mybookapp.databinding.ActivityPdfListAdminBinding
+import com.example.mybookapp.models.ModelPdf
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

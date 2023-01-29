@@ -1,4 +1,4 @@
-package com.example.mybookapp
+package com.example.mybookapp.models
 
 class ModelPdf {
     //variables

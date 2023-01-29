@@ -1,4 +1,4 @@
-package com.example.mybookapp
+package com.example.mybookapp.adapters
 
 import android.app.AlertDialog
 import android.content.Context
@@ -10,7 +10,12 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.mybookapp.filters.FilterPdfAdmin
+import com.example.mybookapp.MyApplication
+import com.example.mybookapp.activities.PdfDetailActivity
+import com.example.mybookapp.activities.PdfEditActivity
 import com.example.mybookapp.databinding.RowPdfAdminBinding
+import com.example.mybookapp.models.ModelPdf
 
 class AdapterPdfAdmin:Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Filterable {
 
@@ -22,7 +27,7 @@ class AdapterPdfAdmin:Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Filterable {
 
     private lateinit var binding: RowPdfAdminBinding
     //filter object
-    private var filter:FilterPdfAdmin? = null
+    private var filter: FilterPdfAdmin? = null
 
 
     constructor(context: Context, pdfArrayList: ArrayList<ModelPdf>) : super() {
@@ -71,7 +76,13 @@ class AdapterPdfAdmin:Adapter<AdapterPdfAdmin.HolderPdfAdmin>,Filterable {
         //category id
         MyApplication.loadCategory(categoryId, holder.categoryTv)
         //we don't need page number here pass null page number
-        MyApplication.loadPdfFromUrlSinglePage(pdfUrl, title, holder.pdfView, holder.progressBar, null)
+        MyApplication.loadPdfFromUrlSinglePage(
+            pdfUrl,
+            title,
+            holder.pdfView,
+            holder.progressBar,
+            null
+        )
 
         //load pdf size
         MyApplication.loadPdfSize(pdfUrl, title, holder.sizeTv)

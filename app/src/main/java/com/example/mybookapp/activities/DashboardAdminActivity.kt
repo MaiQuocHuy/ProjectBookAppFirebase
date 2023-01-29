@@ -1,13 +1,13 @@
-package com.example.mybookapp
+package com.example.mybookapp.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import androidx.core.widget.addTextChangedListener
+import com.example.mybookapp.adapters.AdapterCategory
 import com.example.mybookapp.databinding.ActivityDashboardAdminBinding
+import com.example.mybookapp.models.ModelCategory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -71,6 +71,11 @@ class DashboardAdminActivity : AppCompatActivity() {
         binding.addPdffab.setOnClickListener {
             startActivity(Intent(this, PdfAddActivity::class.java))
             finish()
+        }
+
+        //handle click, open click
+        binding.profileBtn.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
     }
 

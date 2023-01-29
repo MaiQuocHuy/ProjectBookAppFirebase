@@ -1,15 +1,17 @@
-package com.example.mybookapp
+package com.example.mybookapp.activities
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Display.Mode
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.example.mybookapp.BookUserFragment
 import com.example.mybookapp.databinding.ActivityDashboardUserBinding
+import com.example.mybookapp.models.ModelCategory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -43,6 +45,11 @@ DashboardUserActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
+
+        //handle click, open click
+        binding.profileBtn.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
 
     private fun setupWithViewPagerAdapter(viewPager: ViewPager) {
@@ -69,7 +76,7 @@ DashboardUserActivity : AppCompatActivity() {
                 categoryArrayList.add(modelMostDownloaded)
                 viewPagerAdapter.addFragment(
                     BookUserFragment.newInstance(
-                         "${modelAll.id}",
+                        "${modelAll.id}",
                         "${modelAll.category}",
                         "${modelAll.uid}"
                     ), modelAll.category
@@ -97,11 +104,12 @@ DashboardUserActivity : AppCompatActivity() {
                     //add to list
                     categoryArrayList.add(model!!)
                     //add to viewPagerAdapter
-                    viewPagerAdapter.addFragment(BookUserFragment.newInstance(
-                        "${model.id}",
-                        "${model.category}",
-                        "${model.uid}"
-                    ), model.category)
+                    viewPagerAdapter.addFragment(
+                        BookUserFragment.newInstance(
+                            "${model.id}",
+                            "${model.category}",
+                            "${model.uid}"
+                        ), model.category)
                     //refresh list
                     viewPagerAdapter.notifyDataSetChanged()
                 }
@@ -148,15 +156,21 @@ DashboardUserActivity : AppCompatActivity() {
 
 
     }
-
+    //this activity can be open with or withoud login so hide logout and profile button when user not logged in
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser
         // not login user can stay in user dahsboard
         if (firebaseUser == null) {
             binding.subTitleTv.text = "Not logged in"
+            //hide profile
+            binding.profileBtn.visibility = View.GONE
+            binding.logoutBtn.visibility = View.GONE
         } else {
             val email = firebaseUser.email
             binding.subTitleTv.text = email
+            //show profile
+            binding.profileBtn.visibility = View.VISIBLE
+            binding.logoutBtn.visibility = View.VISIBLE
         }
     }
 }

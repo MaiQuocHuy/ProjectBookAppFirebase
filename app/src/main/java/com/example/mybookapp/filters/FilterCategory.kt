@@ -1,6 +1,8 @@
-package com.example.mybookapp
+package com.example.mybookapp.filters
 
 import android.widget.Filter
+import com.example.mybookapp.adapters.AdapterCategory
+import com.example.mybookapp.models.ModelCategory
 
 class FilterCategory: Filter {
     // arraylist we want to search

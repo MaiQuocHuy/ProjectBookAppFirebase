@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DashboardAdminActivity">
+    tools:context=".activities.DashboardAdminActivity">
 
     <RelativeLayout
         android:id="@+id/toolbarRl"
@@ -12,13 +12,24 @@
         android:layout_height="?actionBarSize"
         android:background="@drawable/shape_toolbar02">
 
+<!--        ImageButton: Open profile-->
+
+        <ImageButton
+            android:id="@+id/profileBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_person_24"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"/>
+
         <TextView
             android:id="@+id/titleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
-            android:text="Dashboard User"
+            android:text="Dashboard Admin"
             android:textStyle="bold"
             android:textColor="@color/white"/>
 

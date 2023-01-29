@@ -1,7 +1,9 @@
-package com.example.mybookapp
+package com.example.mybookapp.filters
 
 import android.util.Log
 import android.widget.Filter
+import com.example.mybookapp.adapters.AdapterPdfUser
+import com.example.mybookapp.models.ModelPdf
 
 class FilterPdfUser: Filter {
     //arraylist in which we want to search
