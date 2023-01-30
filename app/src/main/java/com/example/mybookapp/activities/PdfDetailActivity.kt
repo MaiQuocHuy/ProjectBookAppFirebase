@@ -18,12 +18,16 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import java.io.FileOutputStream
 import android.Manifest
+import android.app.AlertDialog
+import android.view.LayoutInflater
 import com.example.mybookapp.Constants
 import com.example.mybookapp.MyApplication
 import com.example.mybookapp.R
+import com.example.mybookapp.databinding.DialogCommentAddBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class PdfDetailActivity : AppCompatActivity() {
+
     //view binding
     private lateinit var binding: ActivityPdfDetailBinding
 //    private val REQUEST_CODE_STORAGE = 1
@@ -114,6 +118,75 @@ class PdfDetailActivity : AppCompatActivity() {
                 }
             }
         }
+
+        //handle click, show add comment dialog
+        binding.addCommentBtn.setOnClickListener {
+//            To add a commnet, user must be logged in, if not just show a message, you're not logged in
+            if(firebaseAuth.currentUser == null) {
+                //user not logged, don't allow adding comment
+                Toast.makeText(this, "You're not logged in", Toast.LENGTH_SHORT).show()
+            } else {
+                //user logged in, allow adding commnet
+                addCommentDialog()
+            }
+        }
+    }
+
+    private var comment = ""
+
+    private fun addCommentDialog() {
+        //inflate/bind view for dialog_commnet-add.xml
+        val commentAddBinding = DialogCommentAddBinding.inflate(LayoutInflater.from(this))
+        //set up alert dialog
+        val builder = AlertDialog.Builder(this, R.style.CustomDialog)
+        builder.setView(commentAddBinding.root)
+        //create and show alert dialog
+        val alertDialog = builder.create()
+        alertDialog.show()
+        //handle click, dismis dialog
+        commentAddBinding.backBtn.setOnClickListener {alertDialog.dismiss() }
+        //handle lcick, add comment
+        commentAddBinding.submitBtn.setOnClickListener {
+            //get data
+            comment = commentAddBinding.commentEt.text.toString().trim()
+            //validate data
+            if(comment.isEmpty()) {
+                Toast.makeText(this, "Enter comment...", Toast.LENGTH_SHORT).show()
+            } else {
+                alertDialog.dismiss()
+                addComment()
+            }
+        }
+    }
+
+    private fun addComment() {
+        //show progress
+        progressDialog.setMessage("Adding comment")
+        progressDialog.show()
+        //timestamp for comment id, comment timestamp
+        val timestamp = "${System.currentTimeMillis()}"
+        //setup data to add in db for comment
+        val hashMap = HashMap<String, Any>()
+        hashMap["id"] = "$timestamp"
+        hashMap["bookId"] = "$bookId"
+        hashMap["timestamp"] = "$timestamp"
+        hashMap["comment"] = "$comment"
+        hashMap["uid"] = "${firebaseAuth.uid}"
+
+        //Db path to add data into it
+
+        //Books > bookid > Comments > commentId > CommentData
+        val ref = FirebaseDatabase.getInstance().getReference("Boooks")
+        ref.child(bookId).child("Comments").child(timestamp)
+            .setValue(hashMap)
+            .addOnSuccessListener {
+                progressDialog.dismiss()
+                Toast.makeText(this, "Comment Added", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                progressDialog.dismiss()
+                Toast.makeText(this, "Faild to add comment ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun checkIsFavorite() {
@@ -227,7 +300,6 @@ class PdfDetailActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, "Failed to save due to ${e.message}", Toast.LENGTH_SHORT).show()
-
         }
     }
 

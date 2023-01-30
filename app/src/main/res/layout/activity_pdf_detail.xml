@@ -238,20 +238,18 @@
                 android:text="Comments"
                 android:textColor="@color/black"
                 android:textSize="16sp"/>
-             <ImageButton
-                 android:id="@+id/addComment"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:src="@drawable/ic_baseline_add_comment_24"
-                 android:padding="10dp"
-                 android:layout_alignParentEnd="true"
-                 />
+
+                <ImageButton
+                    android:id="@+id/addCommentBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@android:color/transparent"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_baseline_add_comment_24"
+                    app:tint="@color/black" />
 
             </RelativeLayout>
-
-
-                
-
         </LinearLayout>
 
     </ScrollView>
