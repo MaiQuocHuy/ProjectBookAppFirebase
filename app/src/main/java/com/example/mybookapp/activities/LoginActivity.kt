@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import com.example.mybookapp.databinding.ActivityLoginBinding
@@ -55,6 +56,10 @@ class LoginActivity : AppCompatActivity() {
 
             validateData()
         }
+
+        binding.forgotTv.setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
+        }
     }
 
     private var email = ""
@@ -79,14 +84,26 @@ class LoginActivity : AppCompatActivity() {
         progressDialog.setMessage("Logging in...")
         progressDialog.show()
 
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                checkUser()
-            }
-            .addOnFailureListener { e ->
-                progressDialog.dismiss()
-                Toast.makeText(this, "Login failed due to ${e.message}", Toast.LENGTH_SHORT).show()
-            }
+       try {
+           firebaseAuth.signInWithEmailAndPassword(email, password)
+               .addOnSuccessListener {
+                   checkUser()
+               }
+               .addOnFailureListener { e ->
+                   progressDialog.dismiss()
+                   Toast.makeText(this, "Login failed due to ${e.message}", Toast.LENGTH_SHORT).show()
+               }
+       } catch (e: Exception) {
+           Log.d("Login", "${e.message}")
+       }
+
+//            .addOnSuccessListener {
+//                checkUser()
+//            }
+//            .addOnFailureListener { e ->
+//                progressDialog.dismiss()
+//                Toast.makeText(this, "Login failed due to ${e.message}", Toast.LENGTH_SHORT).show()
+//            }
     }
 
     private fun checkUser() {

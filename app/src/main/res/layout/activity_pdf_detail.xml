@@ -226,7 +226,7 @@
                 android:layout_height="2dp"
                 android:background="@color/gray03"
                 android:layout_marginTop="5dp"/>
-            
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -248,6 +248,14 @@
                     android:padding="10dp"
                     android:src="@drawable/ic_baseline_add_comment_24"
                     app:tint="@color/black" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/commentsRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/addCommentBtn"
+                    tools:listitem="@layout/row_comment"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </RelativeLayout>
         </LinearLayout>

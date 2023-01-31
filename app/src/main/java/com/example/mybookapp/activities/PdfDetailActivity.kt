@@ -23,7 +23,9 @@ import android.view.LayoutInflater
 import com.example.mybookapp.Constants
 import com.example.mybookapp.MyApplication
 import com.example.mybookapp.R
+import com.example.mybookapp.adapters.AdapterComment
 import com.example.mybookapp.databinding.DialogCommentAddBinding
+import com.example.mybookapp.models.ModelComment
 import com.google.firebase.auth.FirebaseAuth
 
 class PdfDetailActivity : AppCompatActivity() {
@@ -50,6 +52,10 @@ class PdfDetailActivity : AppCompatActivity() {
 
     private lateinit var progressDialog: ProgressDialog
 
+    private lateinit var commentArrayList: ArrayList<ModelComment>
+
+    private lateinit var adapterComment: AdapterComment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPdfDetailBinding.inflate(layoutInflater)
@@ -72,6 +78,7 @@ class PdfDetailActivity : AppCompatActivity() {
         //increate book view count
         MyApplication.increamentBookViewCount(bookId)
         loadBookDetails()
+        showComments()
 
         //handle backbutton click
         binding.backBtn.setOnClickListener {
@@ -132,6 +139,37 @@ class PdfDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun showComments() {
+        //init
+        commentArrayList = ArrayList()
+        //db padth to load comments
+        val ref = FirebaseDatabase.getInstance().getReference("Books")
+             ref.child(bookId).child("Comments")
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    commentArrayList.clear()
+                    for (ds in snapshot.children) {
+                        //get data model, be careful of spelling and data type
+                        val model = ds.getValue(ModelComment::class.java)
+                        //add to list
+                        Log.d("Detailactivy", "${model}")
+                        commentArrayList.add(model!!)
+                    }
+                    //set up adapter
+                    adapterComment =  AdapterComment(this@PdfDetailActivity, commentArrayList)
+                    //set adapter to recyleview
+                    binding.commentsRv.adapter = adapterComment
+                }
+
+                //
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
+    }
+
     private var comment = ""
 
     private fun addCommentDialog() {
@@ -176,7 +214,7 @@ class PdfDetailActivity : AppCompatActivity() {
         //Db path to add data into it
 
         //Books > bookid > Comments > commentId > CommentData
-        val ref = FirebaseDatabase.getInstance().getReference("Boooks")
+        val ref = FirebaseDatabase.getInstance().getReference("Books")
         ref.child(bookId).child("Comments").child(timestamp)
             .setValue(hashMap)
             .addOnSuccessListener {
