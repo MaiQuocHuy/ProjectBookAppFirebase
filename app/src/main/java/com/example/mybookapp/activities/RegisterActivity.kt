@@ -113,9 +113,8 @@ class RegisterActivity : AppCompatActivity() {
         hashMap["profileImage"] = "" // will do in profile edit
         hashMap["userType"] = "user" // possible values are user/admin
         hashMap["timestamp"] = timestamp
-
+        hashMap["money"] = 0
         //set Data to db
-
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         ref.child(uid!!)
             .setValue(hashMap)
@@ -125,13 +124,11 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Account created...", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this@RegisterActivity, DashboardUserActivity::class.java))
                 finish()
-
             }
             .addOnFailureListener { e ->
                 //failed adding data to db
                 progressDialog.dismiss()
                 Toast.makeText(this, "Failed saving user info due to ${e.message}", Toast.LENGTH_SHORT).show()
             }
-
     }
 }

@@ -11,8 +11,6 @@
 
 
     <!--    To show pdf and progress for pdf load-->
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -85,7 +83,13 @@
             android:layout_alignParentBottom="true"
             android:textAlignment="center"/>
 
-
+        <ImageView
+            android:id="@+id/status"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_lock_gray_24"/>
 
     </RelativeLayout>
 

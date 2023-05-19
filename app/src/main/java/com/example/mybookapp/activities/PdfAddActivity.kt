@@ -6,11 +6,14 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import com.example.mybookapp.R
 import com.example.mybookapp.databinding.ActivityPdfAddBinding
 import com.example.mybookapp.models.ModelCategory
 import com.google.android.gms.tasks.Task
@@ -62,7 +65,6 @@ class PdfAddActivity : AppCompatActivity() {
         }
 
         //handle click, pick pdf
-
         binding.attachPdfBtn.setOnClickListener {
             pdfPickIntent()
         }
@@ -76,11 +78,14 @@ class PdfAddActivity : AppCompatActivity() {
     private var title = ""
     private var description = ""
     private var category = ""
+    private var status = ""
+    private var price = ""
 
     private fun validateData() {
         title = binding.titleEt.text.toString().trim()
         description = binding.descriptionEt.text.toString().trim()
         category = binding.categoryTv.text.toString().trim()
+        price = binding.moneyEt.text.toString().trim()
 
         if(title.isEmpty()) {
             Toast.makeText(this, "Enter title...", Toast.LENGTH_SHORT).show()
@@ -90,8 +95,11 @@ class PdfAddActivity : AppCompatActivity() {
             Toast.makeText(this, "Pick category...",Toast.LENGTH_SHORT).show()
         } else if(pdfUri == null) {
             Toast.makeText(this, "Pick PDF", Toast.LENGTH_SHORT).show()
-        }
-        else {
+        } else if(status.isEmpty()) {
+            Toast.makeText(this, "Status empty", Toast.LENGTH_SHORT).show()
+        } else if(price.isEmpty()) {
+            Toast.makeText(this, "Price empty", Toast.LENGTH_SHORT).show()
+        } else {
             uploadPdfToStorage()
         }
     }
@@ -133,6 +141,8 @@ class PdfAddActivity : AppCompatActivity() {
         hashMap["timestamp"] = timestamp
         hashMap["viewsCount"] = 0
         hashMap["downloadsCount"] = 0
+        hashMap["price"] = price.toInt()
+        hashMap["status"] = "$status"
 
         val ref = FirebaseDatabase.getInstance().getReference("Books")
         ref.child("$timestamp")
@@ -200,7 +210,7 @@ class PdfAddActivity : AppCompatActivity() {
 
     private fun pdfPickIntent() {
         val intent = Intent()
-        intent.type =  "application/pdf"
+        intent.type =  "application/*"
         intent.action = Intent.ACTION_GET_CONTENT
         pdfActivityResultLauncher.launch(intent)
     }
@@ -217,4 +227,25 @@ class PdfAddActivity : AppCompatActivity() {
             }
         }
     )
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                R.id.radio_lock ->
+                    if (checked) {
+                        status = "lock"
+                        Log.d("ADDBOOK", "${status}")
+                    }
+                R.id.radio_unlock ->
+                    if (checked) {
+                        status = "unlock"
+                        Log.d("ADDBOOK", "${status}")
+                    }
+            }
+        }
+    }
 }

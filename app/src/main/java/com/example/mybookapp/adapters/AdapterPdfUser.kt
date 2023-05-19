@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.mybookapp.filters.FilterPdfUser
@@ -28,11 +29,13 @@ class AdapterPdfUser:Adapter<AdapterPdfUser.HolderPdfUser>, Filterable {
 
     private var filter: FilterPdfUser? = null
 
+    private lateinit var listener: ItemClickListener
 
-    constructor(context: Context, pdfArrayList: ArrayList<ModelPdf>) {
+    constructor(context: Context, pdfArrayList: ArrayList<ModelPdf>, listener: ItemClickListener) {
         this.context = context
         this.pdfArrayList = pdfArrayList
         this.filterList = pdfArrayList
+        this.listener = listener
     }
 
 
@@ -45,6 +48,7 @@ class AdapterPdfUser:Adapter<AdapterPdfUser.HolderPdfUser>, Filterable {
         var categoryTv = binding.categoryTv
         var sizeTv = binding.sizeTv
         var dateTv = binding.dateTv
+        var status = binding.status
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderPdfUser {
@@ -55,42 +59,54 @@ class AdapterPdfUser:Adapter<AdapterPdfUser.HolderPdfUser>, Filterable {
 
     override fun onBindViewHolder(holder: HolderPdfUser, position: Int) {
 //       Get data, set data, handle click etc
-        val model = pdfArrayList[position]
-        val bookId = model.id
-        val categoryId = model.categoryId
-        val title = model.title
-        val description = model.description
-        val uid = model.uid
-        val url = model.url
-        val timestamp = model.timestamp
+        if(pdfArrayList.size != 0) {
+            val model = pdfArrayList[position]
+            val bookId = model.id
+            val categoryId = model.categoryId
+            val title = model.title
+            val description = model.description
+            val uid = model.uid
+            val url = model.url
+            val status = model.status
+            val timestamp = model.timestamp
+            val date = MyApplication.formatTimeStamp(timestamp)
+            //set data
+            holder.titleTv.text = title
+            holder.descriptionTv.text = description
+            holder.dateTv.text = date
 
-        val date = MyApplication.formatTimeStamp(timestamp)
-        //set data
+            if(status == "unlock") {
+                holder.status.visibility = View.INVISIBLE
+            } else if(status == "lock") {
+                holder.status.visibility = View.VISIBLE
+            }
 
-        holder.titleTv.text = title
-        holder.descriptionTv.text = description
-        holder.dateTv.text = date
+            MyApplication.loadPdfFromUrlSinglePage(
+                url,
+                title,
+                holder.pdfView,
+                holder.progressionBar,
+                null
+            )//no need number of pages so pass null
 
-        MyApplication.loadPdfFromUrlSinglePage(
-            url,
-            title,
-            holder.pdfView,
-            holder.progressionBar,
-            null
-        )//no need number of pages so pass null
+            MyApplication.loadCategory(categoryId, holder.categoryTv)
 
-        MyApplication.loadCategory(categoryId, holder.categoryTv)
+            MyApplication.loadPdfSize(url, title, holder.sizeTv)
 
-        MyApplication.loadPdfSize(url, title, holder.sizeTv)
-
-        //handle click, open pdf details page
-        holder.itemView.setOnClickListener {
-            //pass book id in tent, will be used to get pdf info
-            val intent = Intent(context, PdfDetailActivity::class.java)
-            intent.putExtra("bookId", bookId)
-            context.startActivity(intent)
+            //handle click, open pdf details page
+            if(status == "unlock") {
+                holder.itemView.setOnClickListener {
+                    //pass book id in tent, will be used to get pdf info
+                    val intent = Intent(context, PdfDetailActivity::class.java)
+                    intent.putExtra("bookId", bookId)
+                    context.startActivity(intent)
+                }
+            } else if(status == "lock") {
+                holder.itemView.setOnClickListener {
+                    listener.onItemClicked(model)
+                }
+            }
         }
-
     }
 
     override fun getItemCount(): Int {
@@ -101,5 +117,9 @@ class AdapterPdfUser:Adapter<AdapterPdfUser.HolderPdfUser>, Filterable {
              filter = FilterPdfUser(filterList, this)
          }
         return filter as FilterPdfUser
+    }
+
+    interface ItemClickListener {
+        fun onItemClicked(bookPdf: ModelPdf)
     }
 }

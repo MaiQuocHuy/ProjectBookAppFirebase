@@ -11,4 +11,29 @@
     <color name="gray02">#777777</color>
     <color name="gray03">#EDEDED</color>
     <color name="gray04">#FBFBFB</color>
+    <color name="primary">#DB3022</color>
+    <color name="background">#F9F9F9</color>
+    <color name="backgroundAd">#FFFFFFFF</color>
+    <color name="error">#F01F0E</color>
+    <color name="success">#2AA952</color>
+    <color name="sale">#DB3022</color>
+    <color name="mainText">#222222</color>
+    <color name="textAd">#9B9B9B</color>
+    <color name="silver">#AAAAAA</color>
+    <color name="border_color">#BBBBBB</color>
+    <color name="blue_bland">#33CCFF</color>
+    <color name="brown">#333333</color>
+    <color name="brown_bland">#E4E6EB</color>
+    <color name="green">#2BA999</color>
+    <color name="scrollbar_track_start">#FF8800</color>
+    <color name="scrollbar_track_end">#FFBB33</color>
+    <color name="color_text_brow">#848485</color>
+    <color name="color_text_green">#42A993</color>
+    <color name="color_text_green_normal">#6DB7A4</color>
+    <color name="color_text_brown_turnoff">#CCCCCD</color>
+    <color name="blue">#4169E1</color>
+    <color name="newblue">#0C83E2</color>
+    <color name="gray_dark">#707070</color>
+    <color name="winter">#a1c4fd</color>
+
 </resources>

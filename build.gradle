@@ -4,6 +4,8 @@ buildscript {
         mavenCentral()
 //        maven { url "http://jcenter.bintray.com" }
 //        gradlePluginPortal()
+        maven { url 'https://jitpack.io' }
+
     }
 
     dependencies {

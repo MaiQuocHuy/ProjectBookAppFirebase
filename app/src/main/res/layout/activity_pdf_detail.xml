@@ -297,7 +297,7 @@
             android:text="Add To Favorite"
             android:layout_weight="1"
             android:textSize="10sp"
-            android:drawableTop="@drawable/ic_baseline_favorite_border_24"/>
+            android:drawableTop="@drawable/ic_baseline_favorite_24"/>
     </LinearLayout>
 
 </RelativeLayout>

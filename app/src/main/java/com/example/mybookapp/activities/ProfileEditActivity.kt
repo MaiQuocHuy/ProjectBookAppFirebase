@@ -8,6 +8,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Menu
 import android.widget.PopupMenu
 import android.widget.Toast
@@ -102,9 +103,7 @@ class ProfileEditActivity : AppCompatActivity() {
                 val uriTask: Task<Uri> = taskSnapshot.storage.downloadUrl
                 while (!uriTask.isSuccessful);
                 val uploadedImageUrl = "${uriTask.result}"
-
                 updateProfile(uploadedImageUrl)
-
             }
             .addOnFailureListener { e ->
                 progressDialog.dismiss()
@@ -174,7 +173,6 @@ class ProfileEditActivity : AppCompatActivity() {
         popupMenu.show()
 
         //handle popup menu item click
-
         popupMenu.setOnMenuItemClickListener { item ->
             //get id from click item
             val id = item.itemId
@@ -185,7 +183,6 @@ class ProfileEditActivity : AppCompatActivity() {
                 // Gallery click
                 pickImageGallery()
             }
-
             true
         }
     }
@@ -232,6 +229,7 @@ class ProfileEditActivity : AppCompatActivity() {
                 val data = result.data
                 imageUri = data!!.data
                 //set to imageview
+                Log.d("ImgURI", "$imageUri")
                 binding.profileIv.setImageURI(imageUri)
             } else {
                 //canceled

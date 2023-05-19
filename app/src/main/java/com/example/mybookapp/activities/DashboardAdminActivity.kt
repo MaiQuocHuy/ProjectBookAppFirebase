@@ -31,15 +31,15 @@ class DashboardAdminActivity : AppCompatActivity() {
 
         firebaseAuth = FirebaseAuth.getInstance()
         checkUser()
+        checkUser()
         loadCategories()
 
         //search
         binding.searchEt.addTextChangedListener (object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun onTextChanged(p0 : CharSequence?, p1: Int, p2: Int, p3: Int) {
                 //called as when user type anything
                 try {
                     adapterCategory.filter.filter(p0)
@@ -65,17 +65,18 @@ class DashboardAdminActivity : AppCompatActivity() {
         // handle click, start add category page
         binding.addCategoryBtn.setOnClickListener {
             startActivity(Intent(this, CategoryAddActivity::class.java))
-            finish()
         }
 
         binding.addPdffab.setOnClickListener {
             startActivity(Intent(this, PdfAddActivity::class.java))
-            finish()
         }
-
         //handle click, open click
         binding.profileBtn.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        binding.revenuePdf.setOnClickListener {
+            startActivity(Intent(this, ManageRevenueActivity::class.java))
         }
     }
 

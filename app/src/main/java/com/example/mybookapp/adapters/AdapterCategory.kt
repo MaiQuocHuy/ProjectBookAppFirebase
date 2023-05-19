@@ -3,6 +3,7 @@ package com.example.mybookapp.adapters
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +14,11 @@ import com.example.mybookapp.filters.FilterCategory
 import com.example.mybookapp.models.ModelCategory
 import com.example.mybookapp.activities.PdfListAdminActivity
 import com.example.mybookapp.databinding.RowCategoryBinding
+import com.example.mybookapp.models.ModelPdf
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class AdapterCategory:Adapter<AdapterCategory.HolderCategory>, Filterable {
 
@@ -23,6 +28,7 @@ class AdapterCategory:Adapter<AdapterCategory.HolderCategory>, Filterable {
     public var categoryArrayList: ArrayList<ModelCategory>
     private var filterList: ArrayList<ModelCategory>
     private var filter: FilterCategory? = null
+    private lateinit var pdfArrayList: ArrayList<ModelPdf>
 
     constructor(context: Context, categoryArrayList: ArrayList<ModelCategory>) {
         this.context = context
@@ -93,11 +99,57 @@ class AdapterCategory:Adapter<AdapterCategory.HolderCategory>, Filterable {
         ref.child(id)
             .removeValue()
             .addOnSuccessListener {
-                Toast.makeText(context, "Deleted....", Toast.LENGTH_SHORT).show()
+                Log.d("CheckToDelete", "Checkpoint")
+                getAllBookByCategoryID(id)
             }
             .addOnFailureListener {
                 Toast.makeText(context, "Unable to Delete....", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun getAllBookByCategoryID(id: String) {
+        pdfArrayList = ArrayList()
+        val ref = FirebaseDatabase.getInstance().getReference("Books")
+        ref.orderByChild("categoryId").equalTo(id)
+            .addValueEventListener(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    pdfArrayList.clear()
+                    for (ds in snapshot.children) {
+                        //get data
+                        val model = ds.getValue(ModelPdf::class.java)
+                        //check if the bookID is in the listbook and set status to "unlock"
+                        pdfArrayList.add(model!!)
+                        Log.d("CheckPoint", "${model.categoryId}")
+                    }
+                    if(pdfArrayList.size != 0) {
+                        deleteAllBookByCategoryID()
+                    } else {
+                        Toast.makeText(context, "Deleted....", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
+    }
+
+    private fun deleteAllBookByCategoryID() {
+        for (ds in pdfArrayList) {
+            Log.d("data", "${ds.id}")
+        }
+        val ref = FirebaseDatabase.getInstance().getReference("Books")
+           for (model in pdfArrayList) {
+               ref.child(model.id)
+                   .removeValue()
+                   .addOnSuccessListener {
+                       Log.d("Delete Successfully", "deleted book successfully")
+                       Toast.makeText(context, "Deleted....", Toast.LENGTH_SHORT).show()
+                   }
+                   .addOnFailureListener {
+                       Toast.makeText(context, "Unable to Delete....", Toast.LENGTH_SHORT).show()
+                   }
+           }
     }
 
     override fun getItemCount(): Int = categoryArrayList.size // number of items in list

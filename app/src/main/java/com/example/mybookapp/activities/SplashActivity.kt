@@ -33,17 +33,13 @@ class SplashActivity : AppCompatActivity() {
         // get current user, if logged in or not
         val firebaseUser = firebaseAuth.currentUser
         val TAG = "CHECK USER"
-//        startActivity(Intent(this@SplashActivity, DashboardUserActivity::class.java))
-//        finish()
-            if(firebaseUser == null) {
+        if(firebaseUser == null) {
                 //User not logged in, goto main screen
                 Log.d(TAG, "SUCCEESS")
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } else {
                 val ref = FirebaseDatabase.getInstance().getReference("Users")
-                Log.d(TAG, "SUCCEESS1")
-                Log.d(TAG, "${firebaseUser.uid}")
                 ref.child(firebaseUser.uid)
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
@@ -59,9 +55,11 @@ class SplashActivity : AppCompatActivity() {
                                 // admin's Dashboard
                                 startActivity(Intent(this@SplashActivity, DashboardAdminActivity::class.java))
                                 finish()
+                            } else {
+                                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                                finish()
                             }
                         }
-
                         override fun onCancelled(error: DatabaseError) {
                         }
 

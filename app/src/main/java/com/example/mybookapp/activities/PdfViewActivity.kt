@@ -119,6 +119,13 @@ class PdfViewActivity : AppCompatActivity() {
                 }
                 binding.nextButton.setOnClickListener {
                     if(currentPageNumber == pdfRenderer.pageCount -1) {
+                        currentPageNumber++
+                        showPage(
+                            currentPageNumber,
+                            pdfRenderer,
+                            binding.pdfView,
+                            binding.toolbarSubtitleTv
+                        )
                         Toast.makeText(this, "End",Toast.LENGTH_SHORT).show()
                     } else if (currentPageNumber < pdfRenderer.pageCount - 1) {
                         currentPageNumber++
@@ -130,13 +137,9 @@ class PdfViewActivity : AppCompatActivity() {
                         )
                     }
                 }
-//                currentPage.close()
-//                pdfRenderer.close()
-//                fileDescriptor.close()
             }
             .addOnFailureListener { e ->
                 Log.d(TAG, "loadBookFromUrl:Fail to get url due to ${e.message}")
-
             }
     }
 
@@ -147,7 +150,8 @@ class PdfViewActivity : AppCompatActivity() {
         toolbarSubtitleTv: TextView
     ) {
         currentPage.close()
-        currentPage = pdfRenderer.openPage(pageNumber)
+        val current = currentPageNumber - 1
+        currentPage = pdfRenderer.openPage(current)
         val bitmap =
             Bitmap.createBitmap(currentPage.width, currentPage.height, Bitmap.Config.ARGB_8888)
         currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
